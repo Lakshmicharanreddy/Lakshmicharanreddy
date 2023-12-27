@@ -1,0 +1,21 @@
+import instaloader
+
+def download_instagram_profile(username):
+    # Initialize instaloader
+    instaloader.Instaloader.browser_open = False
+    L = instaloader.Instaloader()
+
+    # Get profile metadata
+    profile = instaloader.Profile.from_username(L.context, username)
+
+    # Download profile picture
+    profile_pic_url = profile.profile_pic_url
+    profile_pic_file = username + "_profile_pic." + profile_pic_url.split(".")[-1]
+    L.download_pic(profile_pic_url, profile_pic_file)
+
+    # Download posts
+    for post in profile.get_posts():
+        L.download_post(post, target=username + "_posts")
+
+if __name__ == "__main__":
+    download_instagram_profile("your_instagram_username")
